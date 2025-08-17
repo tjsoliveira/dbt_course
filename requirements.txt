@@ -1,0 +1,3 @@
+dbt-core==1.10.9
+dbt-sqlite==1.10.0
+jafgen==0.4.14
