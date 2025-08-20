@@ -1,0 +1,79 @@
+---
+description: SQL Style Boilerplate
+---
+
+# SQL Formatting Rules
+
+## General Configuration
+- Dialect: BigQuery
+- Templater: dbt
+- Excluded Rules: L034, L036
+
+## Basic Formatting
+1. **Indentation**
+   - Use 4 spaces
+   - CTEs not indented
+   - Joins not indented
+   - Use indentation in template blocks
+   - ON clauses should be aligned with the JOIN keyword (same indentation level)
+
+2. **Line Length**
+   - Maximum: 80 characters
+   - Applicable to comments and clauses
+
+3. **Capitalization**
+   - Keywords: UPPER CASE
+   - Identifiers: lower case
+   - Functions: UPPER CASE
+   - Literals: UPPER CASE
+   - Types: UPPER CASE
+
+## Aliasing Rules
+1. **Tables and Columns**
+   - Aliases must be explicit
+   - Minimum of 3 characters for aliases
+   - Don't use aliases in tables without joins
+   - Avoid self-aliases in columns
+   - Don't allow scalar aliases in expressions
+
+## Join Rules
+1. **Syntax**
+   - Use explicit types (INNER, LEFT, etc.)
+   - Prefer ON clause instead of USING
+   - Avoid subqueries in joins (use CTEs)
+
+## Structure Rules
+1. **CTEs**
+   - Don't allow unused CTEs
+   - Specific formatting for brackets and newlines
+
+2. **SELECT**
+   - DISTINCT on the same line as SELECT
+   - Consistent formatting for targets
+   - Prohibit final comma in SELECT clauses
+
+3. **Operators**
+   - UNION ALL must be on separate line
+   - Consistent spacing in binary operators
+
+## Reference Rules
+1. **Qualification**
+   - References must be qualified in multi-table queries
+   - Consistent style for single table references
+
+## Jinja Rules
+1. **Formatting**
+   - Whitespace on both sides of Jinja expressions
+
+## Conditional Structure Rules
+1. **CASE WHEN**
+   - Avoid unnecessary ELSE NULL
+
+## dbt
+1. tests
+   - Use data_tests for tests like not_null and unique
+   - Evitar ELSE NULL desnecessário
+
+## dbt
+1. tests
+   - Use data_tests for tests like not_null and unique

@@ -1,0 +1,4 @@
+---
+alwaysApply: true
+dbt_version: "1.8.1"
+---
