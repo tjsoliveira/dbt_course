@@ -4,3 +4,7 @@ dbt_packages/
 logs/
 .venv/
 venv/
+*.db
+*.db-journal
+**/seeds/jaffle-data/*
+.user.yml
