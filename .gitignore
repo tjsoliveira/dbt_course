@@ -10,3 +10,5 @@ venv/
 **/seeds/jaffle-data/*
 .user.yml
 package-lock.yml
+.vscode/
+*.pyc

@@ -1,0 +1,53 @@
+version: 2
+
+models:
+
+  - name: daily_sales_summary
+    description: "Daily sales metrics"
+    columns:
+      - name: sale_date
+        description: "Date of sales"
+        data_tests:
+          - unique
+          - not_null
+          - valid_date
+      
+      - name: total_revenue
+        description: "Total revenue for the day"
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+      
+      - name: total_orders
+        description: "Total orders for the day"
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+      
+      - name: avg_order_value
+        description: "Average order value for the day"
+        data_tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: "= total_revenue / total_orders"
+      
+      - name: unique_customers
+        description: "Number of unique customers"
+
+      - name: duplicate_customers
+        description: "Potential duplicate customers"
+        columns:
+          - name: duplicate_count
+            description: "Number of duplicate records"
+            data_tests:
+              - not_null
+              - dbt_utils.expression_is_true:
+                  arguments:
+                    expression: "> 1"

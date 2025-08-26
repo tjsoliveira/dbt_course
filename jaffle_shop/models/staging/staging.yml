@@ -1,0 +1,215 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: "Staging model for cleaned customer data"
+
+    columns:
+      - name: customer_id
+        description: "Primary key for customers"
+        data_tests:
+          - unique
+          - not_null
+      
+      - name: first_name
+        description: "Customer first name"
+        data_tests:
+          - not_null:
+              config:
+                severity: warn
+          - empty_string:
+              config:
+                severity: warn
+      
+      - name: last_name
+        description: "Customer last name"
+        data_tests:
+          - not_null:
+              config:
+                severity: warn
+          - empty_string:
+              config:
+                severity: warn
+      
+      - name: email
+        description: "Customer email address"
+        data_tests:
+          - not_null:
+              config:
+                severity: warn
+      
+      - name: has_valid_email
+        description: "Flag indicating if email is valid"
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['true', 'false']
+                quote: false
+      
+      - name: has_valid_phone
+        description: "Flag indicating if phone is valid"
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [true, false]
+                quote: false
+
+  - name: stg_orders
+    description: "Staging model for cleaned order data"
+    columns:
+      - name: order_id
+        description: "Primary key for orders"
+        data_tests:
+          - unique
+          - not_null
+      
+      - name: customer_id
+        description: "Foreign key to customers"
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_customers')
+                field: customer_id
+      
+      - name: total_amount
+        description: "Order total amount"
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+      
+      - name: status
+        description: "Order status"
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['pending', 'processing', 'shipped', 'delivered', 'cancelled']
+      
+  - name: stg_products
+    description: "Staging model for cleaned product data"
+    columns:
+      - name: product_id
+        description: "Primary key for products"
+        data_tests:
+          - unique
+          - not_null
+      
+      - name: product_name
+        description: "Product name"
+        data_tests:
+          - not_null
+          - empty_string
+
+      - name: sku
+        description: "Product SKU"
+        data_tests:
+          - unique
+          - not_null
+          - empty_string
+      
+      - name: category
+        description: "Main product category"
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [
+                  'Electronics', 'Clothing', 'Books', 'Home & Garden', 'Sports', 'Beauty',
+                  'Food', 'Toys', 'Automotive', 'Health'
+                ]
+      
+      - name: subcategory
+        description: "Product subcategory"
+        data_tests:
+          - not_null
+
+      - name: brand
+        description: "Product brand"
+        data_tests:
+          - not_null
+          - empty_string
+
+      - name: price
+        description: "Product price"
+        data_tests:
+          - not_null
+          - not_negative
+      
+      - name: brand_tier
+        description: "Product brand tier"
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [
+                  'Premium', 'Sports Premium', 'Fashion Premium', 'Beauty Premium',
+                  'Home Premium', 'Standard'
+                ]
+      
+      - name: price_range
+        description: "Product price range"
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Budget', 'Standard', 'Premium', 'Luxury', 'Unknown']
+
+  - name: stg_items
+    description: "Staging model for order items"
+    columns:
+      - name: item_id
+        description: "Primary key for items"
+        data_tests:
+          - unique
+          - not_null
+      
+      - name: order_id
+        description: "Foreign key to orders"
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_orders')
+                field: order_id
+      
+      - name: product_id
+        description: "Foreign key to products"
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_products')
+                field: product_id
+      
+      - name: quantity
+        description: "Item quantity"
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: "> 0"
+      
+      - name: unit_price
+        description: "Unit price per item"
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+      
+      - name: calculated_total_price
+        description: "Total price for this item"
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: ">= 0"
+      
+      - name: created_at
+        description: "Item creation timestamp"
+        data_tests:
+          - not_null
+          - valid_date
