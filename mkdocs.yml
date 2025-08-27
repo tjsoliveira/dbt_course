@@ -50,6 +50,8 @@ nav:
     - Sources: course/sources.md
     - Models: course/models.md
     - Tests: course/tests.md
+  - About the Author: about-author.md
+
 # Plugins
 plugins:
   - search

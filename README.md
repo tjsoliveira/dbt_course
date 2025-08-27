@@ -175,6 +175,13 @@ mkdocs serve
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+## 👨‍💻 **About the Author**
+
+This course was created by **Thiago Oliveira**, a Senior Data Engineer and Analytics Engineer with 10+ years of experience in data and technology. Currently working at Arco Educação, Thiago is a dbt Certified Developer who has implemented data transformation pipelines in production environments using dbt, Airflow, Snowflake, and AWS.
+
+With a Master's degree in Databases and extensive experience at companies like ZENVIA and ENAP, Thiago brings real-world expertise to help you master dbt and modern data engineering practices.
+
+🔗 [Learn more about the author](https://tjsoliveira.github.io/dbt_course/about-author/)
 ## 🌟 **Acknowledgments**
 
 - **[dbt Labs](https://www.getdbt.com/)** for creating the amazing dbt tool
