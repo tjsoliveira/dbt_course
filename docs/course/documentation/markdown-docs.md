@@ -124,18 +124,6 @@ The staging orders model performs the following transformations:
    - Check for reasonable order amounts
    - Ensure dates are within expected ranges
 
-**Sample Query:**
-```sql
-SELECT 
-    order_id,
-    customer_id, 
-    order_total,
-    order_date,
-    status
-FROM {{ ref('stg_orders') }}
-WHERE order_date >= '2024-01-01'
-LIMIT 10;
-```
 <!-- enddocs -->
 ```
 
@@ -147,130 +135,6 @@ models:
     description: "[see documentation]"
 ```
 
-## 📊 Tables and Data Examples
-
-### Creating Tables
-
-```yaml
-- name: customer_segments
-  description: |
-    ## Customer Segmentation Model
-    
-    | Segment | CLV Range | Characteristics |
-    |---------|-----------|----------------|
-    | Premium | $1000+ | High engagement, frequent purchases |
-    | Standard | $200-999 | Regular customers, moderate spend |
-    | Basic | $0-199 | New or low-engagement customers |
-    
-    ### Segment Distribution
-    
-    | Segment | Count | Percentage |
-    |---------|-------|------------|
-    | Premium | 1,234 | 12.3% |
-    | Standard | 5,678 | 56.8% |
-    | Basic | 3,088 | 30.9% |
-```
-
-### Code Examples
-
-```yaml
-- name: revenue_metrics
-  description: |
-    ## Revenue Calculation Logic
-    
-    ### Monthly Recurring Revenue (MRR)
-    ```sql
-    SUM(
-      CASE 
-        WHEN subscription_type = 'monthly' THEN amount
-        WHEN subscription_type = 'annual' THEN amount / 12
-        ELSE 0 
-      END
-    ) AS mrr
-    ```
-    
-    ### Customer Acquisition Cost (CAC)
-    ```sql
-    marketing_spend / new_customers AS cac
-    ```
-    
-    ### Example Usage
-    ```sql
-    SELECT 
-        date_month,
-        mrr,
-        cac,
-        mrr / cac AS ltv_cac_ratio
-    FROM {{ ref('revenue_metrics') }}
-    WHERE date_month >= '2024-01-01';
-    ```
-```
-
-## 🧩 Jinja in Documentation
-
-### Dynamic Content
-
-```yaml
-models:
-  - name: daily_summary
-    description: |
-      # Daily Business Summary
-      
-      **Generated**: {{ run_started_at.strftime('%Y-%m-%d %H:%M UTC') }}
-      **Environment**: {{ target.name }}
-      **Database**: {{ target.database }}
-      
-      {% if target.name == 'prod' %}
-      > ⚠️ **Production Data** - Handle with care
-      {% else %}
-      > 🧪 **Development Environment** - Safe for testing
-      {% endif %}
-```
-
-### Conditional Documentation
-
-```yaml
-- name: sensitive_data
-  description: |
-    # Customer Personal Data
-    
-    {% if target.name == 'prod' %}
-    **⚠️ CONTAINS PII - RESTRICTED ACCESS**
-    
-    This model contains personally identifiable information including:
-    - Full names
-    - Email addresses  
-    - Phone numbers
-    - Billing addresses
-    
-    **Access Policy**: Data team and compliance team only
-    **Retention**: 7 years per GDPR requirements
-    {% else %}
-    **🔒 Masked Development Data**
-    
-    In non-production environments, all PII fields are masked or synthetic.
-    {% endif %}
-```
-
-### Macros in Documentation
-
-```yaml
-- name: financial_metrics
-  description: |
-    # Financial Performance Metrics
-    
-    **Calculation Period**: {{ dbt_utils.pretty_time('%Y-%m-%d') }}
-    
-    ## Revenue Recognition Rules
-    
-    [see documentation]
-    
-    ## Key Formulas
-    
-    {% for metric in ['arr', 'mrr', 'churn_rate'] %}
-    - **{{ metric | title }}**: [see documentation]
-    {% endfor %}
-```
 
 ## 🎨 Advanced Formatting
 
@@ -305,31 +169,6 @@ description: |
   - **Usage**: 📊 High (15+ downstream models)
 ```
 
-### Diagrams and Flowcharts
-
-```yaml
-description: |
-  # Order Processing Pipeline
-  
-  ```mermaid
-  graph TD
-      A[Raw Orders] --> B[Data Validation]
-      B --> C[Business Logic]
-      C --> D[Quality Checks]
-      D --> E[Final Orders]
-      
-      F[Customer Data] --> C
-      G[Product Data] --> C
-  ```
-  
-  ## Process Flow
-  1. **Ingestion** - Raw order data from API
-  2. **Validation** - Check required fields
-  3. **Enrichment** - Add customer and product info
-  4. **Calculation** - Apply business rules
-  5. **Output** - Clean, enriched order facts
-```
-
 ## 📁 Documentation File Organization
 
 ### Standalone Documentation Files
@@ -352,8 +191,6 @@ models/
 ### Business Logic Documentation
 
 ```markdown
-<!-- models/docs/business_logic.md -->
-<!-- docs tag example -->
 ## Order Status Determination
 
 Orders are classified into the following statuses:
@@ -391,7 +228,6 @@ Orders are classified into the following statuses:
 - Express orders skip `confirmed` status when inventory is available
 - International orders require additional compliance checks
 
-<!-- enddocs -->
 ```
 
 ## 🔧 Best Practices
