@@ -40,8 +40,8 @@ nav:
   - Home: index.md
   - Introduction:
     - What is dbt: intro/what-is-dbt.md
-    - Setup: intro/setup.md
     - First Project: intro/first-project.md
+  - Setup: intro/setup.md
   - About the Project:
     - Overview: jaffle-shop/overview.md
     - Project Setup: jaffle-shop/project-setup.md
@@ -50,7 +50,6 @@ nav:
     - Sources: course/sources.md
     - Models: course/models.md
     - Tests: course/tests.md
-
 # Plugins
 plugins:
   - search
