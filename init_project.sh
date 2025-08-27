@@ -52,6 +52,9 @@ echo ""
 # Navigate to dbt project directory
 cd "$DBT_PROJECT_DIR"
 
+echo -e "${YELLOW}🌱 Installing dbt packages...${NC}"
+dbt deps
+
 echo -e "${YELLOW}🌱 Running dbt seed to load data into database...${NC}"
 dbt seed -f
 
@@ -60,6 +63,7 @@ echo -e "${GREEN}🎉 dbt project initialized with custom data!${NC}"
 echo ""
 echo -e "${BLUE}Next steps:${NC}"
 echo "  - Run models: dbt run"
+echo "  - Build (run + test) models: dbt build"
 echo "  - Run tests: dbt test"
 echo "  - Generate docs: dbt docs generate"
 echo ""
