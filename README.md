@@ -133,7 +133,7 @@ dbt docs serve
 | [📊 Sources](https://tjsoliveira.github.io/dbt_course/course/sources/) | Working with source data | ✅ |
 | [🔄 Models](https://tjsoliveira.github.io/dbt_course/course/models/) | Building transformation models | ✅ |
 | [✅ Tests](https://tjsoliveira.github.io/dbt_course/course/tests/) | Data quality and testing | ✅ |
-
+| [📚 Documentation](https://tjsoliveira.github.io/dbt_course/course/documentation/) | Project documentation with YAML, Markdown, and interactive docs | ✅ |
 ## 🛠️ **Technologies Used**
 
 - **[dbt Core](https://www.getdbt.com/)** - Data transformation tool
