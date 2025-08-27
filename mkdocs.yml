@@ -22,27 +22,24 @@ theme:
     - content.code.copy
     - content.code.annotate
   palette:
-    - scheme: default
-      primary: teal
-      accent: cyan
-      toggle:
-        icon: material/toggle-switch
-        name: Switch to dark mode
     - scheme: slate
       primary: teal
       accent: cyan
       toggle:
         icon: material/toggle-switch-off-outline
         name: Switch to light mode
-
+    - scheme: default
+      primary: teal
+      accent: cyan
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to dark mode
 # Navigation
 nav:
   - Home: index.md
-  - Introduction:
-    - What is dbt: intro/what-is-dbt.md
-    - First Project: intro/first-project.md
+  - Getting Started: intro/what-is-dbt.md
   - Setup: intro/setup.md
-  - About the Project:
+  - Jaffle Shop:
     - Overview: jaffle-shop/overview.md
     - Project Setup: jaffle-shop/project-setup.md
   - Course:
@@ -50,7 +47,12 @@ nav:
     - Sources: course/sources.md
     - Models: course/models.md
     - Tests: course/tests.md
-  - About the Author: about-author.md
+    - Documentation:
+      - Overview: course/documentation/index.md
+      - Markdown Docs: course/documentation/markdown-docs.md
+      - Interactive Docs: course/documentation/interactive-docs.md
+      - YAML Configuration: course/documentation/yaml-configuration.md
+  - About: about-author.md
 
 # Plugins
 plugins:

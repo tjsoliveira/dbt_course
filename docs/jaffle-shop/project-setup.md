@@ -1,6 +1,6 @@
-# 🚀 Jaffle Shop Project Setup
+# 🚀 Project Setup
 
-This comprehensive guide will help you set up and run the dbt Jaffle Shop project from scratch.
+This comprehensive guide will help you set up and run the dbt project from scratch.
 
 ## 📋 Prerequisites
 
@@ -16,7 +16,7 @@ This comprehensive guide will help you set up and run the dbt Jaffle Shop projec
 
 ## 🏗️ Project Architecture
 
-The Jaffle Shop project uses a typical **layered architecture** for dbt projects:
+The project uses a typical **layered architecture** for dbt projects:
 
 ```mermaid
 graph TD
@@ -323,12 +323,6 @@ dbt seed --full-refresh && dbt run --full-refresh
 3. **Configure macros** for code reuse
 4. **Optimize model performance**
 
-### **3. For Advanced:**
-1. **Configure CI/CD** with GitHub Actions
-2. **Implement snapshots** for version control
-3. **Integrate with BI tools** (Tableau, Power BI)
-4. **Configure alerts** for test failures
-
 ## 🔍 Troubleshooting
 
 ### **Common Issues:**
@@ -366,19 +360,13 @@ dbt run --threads 4
 3. **Modify and experiment**: Create variations of models
 4. **Study documentation**: Use `dbt docs serve`
 
-### **For Production:**
-1. **Configure production environment** with PostgreSQL/Snowflake
-2. **Implement deployment strategies** with dbt Cloud or CI/CD
-3. **Configure data quality monitoring**
-4. **Train team** in best practices
-
 ## 🎉 Final Verification
 
 ### **Option 1: Using Script (Recommended)**
 ```bash
 # Return to root directory and run complete initialization
 cd ..
-./init_project.sh && cd jaffle_shop && dbt docs generate
+./init_project.sh && cd jaffle_shop && dbt build && dbt docs generate
 
 # ✅ If all commands passed, your environment is perfect!
 ```

@@ -4,7 +4,8 @@ Welcome to the practical **dbt (data build tool)** course using a database inspi
 
 ## 📚 About the Course
 
-This course is designed to teach the fundamental and advanced concepts of dbt through a practical and realistic project. The Jaffle Shop is a demonstration project that simulates an online store, allowing you to learn dbt with data that makes sense in the real world.
+This course is designed to teach the fundamental and advanced concepts of dbt through a practical and realistic project.
+It's based on the Jaffle Shop project, which simulates an online store, allowing you to learn dbt with data that makes sense in the real world.
 
 ## 🎯 What You'll Learn
 
@@ -16,7 +17,7 @@ This course is designed to teach the fundamental and advanced concepts of dbt th
 - ✅ **Documentation**: Creating rich and interactive documentation
 - ✅ **Best Practices**: Industry standards and best practices
 
-## 🏪 Jaffle Shop Project
+## 🏪 The Project
 
 The Jaffle Shop is a fictional online store that sells various products. The project includes:
 
@@ -41,7 +42,7 @@ The Jaffle Shop is a fictional online store that sells various products. The pro
 
 ```mermaid
 graph TD
-    A[Introduction] --> B[Jaffle Shop Project]
+    A[Introduction] --> B[The Project]
     B --> C[Advanced Concepts]
     C --> D[Best Practices]
     
@@ -49,7 +50,6 @@ graph TD
     B --> G[Mart Models]
     B --> H[Analytics Models]
     
-    C --> I[Macros]
     C --> J[Testing]
     C --> K[Documentation]
 ```

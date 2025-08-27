@@ -5,7 +5,8 @@
 [![SQLite](https://img.shields.io/badge/database-SQLite-blue)](https://www.sqlite.org/)
 [![Python](https://img.shields.io/badge/python-3.8+-green)](https://www.python.org/)
 
-A comprehensive, practical dbt (data build tool) course using the famous **Jaffle Shop** project. Learn data transformation, testing, and documentation with real-world examples and best practices.
+A comprehensive, practical dbt (data build tool) course inspired by **Jaffle Shop** project. 
+Learn data transformation, testing, and documentation with real-world examples and best practices.
 
 ## 📖 **Course Documentation**
 
@@ -25,11 +26,11 @@ The complete course materials, tutorials, and guides are available on our GitHub
 - ✅ **Data Quality**: Comprehensive testing strategies
 - ✅ **Documentation**: Auto-generated and rich documentation
 - ✅ **Best Practices**: Industry standards and maintainable code
-- ✅ **Real Project**: Complete Jaffle Shop e-commerce data pipeline
+- ✅ **Real Project**: Based on Jaffle Shop e-commerce project
 
-## 🏪 **About the Jaffle Shop Project**
+## 🏪 **About the Project**
 
-The Jaffle Shop is a fictional online store that sells various products. This realistic dataset includes:
+This project is a fictional online store that sells various products. This realistic dataset includes:
 
 - **👥 Customers**: Demographics, contact info, and behavior data
 - **🛍️ Products**: Complete catalog with categories and brands  
@@ -114,14 +115,8 @@ python scripts/generate_items_data.py
 ```bash
 cd jaffle_shop
 
-# Load seed data
-dbt seed
-
-# Run all models
-dbt run
-
-# Test data quality
-dbt test
+# Build all models
+dbt build
 
 # Generate documentation
 dbt docs generate
@@ -134,7 +129,7 @@ dbt docs serve
 |---------|-------------|--------|
 | [🔰 Introduction](https://tjsoliveira.github.io/dbt_course/intro/what-is-dbt/) | What is dbt and why use it | ✅ |
 | [⚙️ Setup](https://tjsoliveira.github.io/dbt_course/intro/setup/) | Environment configuration | ✅ |
-| [🏪 Jaffle Shop](https://tjsoliveira.github.io/dbt_course/jaffle-shop/overview/) | Project overview and setup | ✅ |
+| [🏪 Project](https://tjsoliveira.github.io/dbt_course/jaffle-shop/overview/) | Project overview and setup | ✅ |
 | [📊 Sources](https://tjsoliveira.github.io/dbt_course/course/sources/) | Working with source data | ✅ |
 | [🔄 Models](https://tjsoliveira.github.io/dbt_course/course/models/) | Building transformation models | ✅ |
 | [✅ Tests](https://tjsoliveira.github.io/dbt_course/course/tests/) | Data quality and testing | ✅ |
@@ -163,12 +158,6 @@ git clone https://github.com/your-username/dbt_course.git
 
 # Set up development environment
 ./init_project.sh
-
-# Install documentation dependencies
-pip install -r requirements-mkdocs.txt
-
-# Serve documentation locally
-mkdocs serve
 ```
 
 ## 📄 **License**
