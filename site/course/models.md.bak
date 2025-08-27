@@ -1,0 +1,78 @@
+# 🏗️ Models in dbt
+
+Models are the heart of dbt - they're SQL files that transform your raw data into clean, structured datasets. In the Jaffle Shop project, we follow a layered approach to data modeling that promotes modularity, testability, and maintainability.
+
+## 🏛️ Model Architecture
+
+Our dbt project follows a three-layer architecture:
+
+```
+📁 models/
+├── 📁 staging/     # Data cleaning and standardization
+├── 📁 analytics/   # Business logic and dimensional modeling  
+└── 📁 marts/       # Final business-ready datasets
+```
+
+## 💡 Best Practices Demonstrated
+
+### **1. Naming Conventions**
+- **Staging**: `stg_[entity]` (e.g., `stg_customers`)
+- **Dimensions**: `dim_[entity]` (e.g., `dim_customers`)
+- **Facts**: `fct_[process]` (e.g., `fct_orders`)
+- **Marts**: `descriptive_name` (e.g., `daily_sales_summary`)
+
+### **2. SQL Style**
+- CTEs (Common Table Expressions) for readability
+- Consistent indentation and formatting
+- Descriptive column aliases
+- Comments for complex logic
+
+### **3. Data Quality**
+- Input validation in staging models
+- Business rule enforcement
+- NULL handling strategies
+- Data type consistency
+
+### **4. Modularity**
+- Single responsibility per model
+- Clear separation of concerns
+- Reusable transformations via macros
+
+## 🛠️ Working with Models
+
+### **Running Models**
+```bash
+# Run all models
+dbt run
+
+# Run specific model
+dbt run --select stg_customers
+
+# Run models and downstream dependencies
+dbt run --select stg_customers+
+
+# Run staging layer only
+dbt run --select staging
+```
+
+### **Testing Models**
+```bash
+# Test all models
+dbt test
+
+# Test specific model
+dbt test --select dim_customers
+```
+
+## 🎯 Key Takeaways
+
+1. **Layered architecture** promotes maintainability and code reuse
+2. **Staging models** should focus on cleaning and standardization
+3. **Analytics models** implement business logic and dimensional modeling
+4. **Marts** provide business-ready datasets for specific use cases
+5. **Clear naming conventions** make projects easier to navigate
+6. **Consistent SQL style** improves readability and maintainability
+
+---
+
+**Next**: Learn how to implement [Tests](tests.md) to ensure data quality across all your models!
