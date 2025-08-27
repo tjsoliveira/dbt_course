@@ -131,48 +131,6 @@ models:
         description: "Total amount spent by customer across all orders"
 ```
 
-## Customizing Documentation
-
-### Adding Images and Assets
-
-1. Create an `assets/` folder in the project
-2. Add images, logos, or other files
-3. Configure the path in `dbt_project.yml`
-
-```yaml
-asset-paths: ["assets"]
-```
-
-### Markdown Documentation
-
-Create `.md` files in the `docs/` folder:
-
-```markdown
-<!-- docs/overview.md -->
-{% docs jaffle_shop_overview %}
-
-# Jaffle Shop - Sample Project
-
-This project demonstrates dbt best practices using fictional 
-sandwich shop data.
-
-## Data Structure
-
-- **Customers**: Customer information
-- **Orders**: Sales transactions
-- **Payments**: Payment methods and amounts
-
-{% enddocs %}
-```
-
-Then reference in schema:
-
-```yaml
-models:
-  - name: customers
-    description: "{{ doc('jaffle_shop_overview') }}"
-```
-
 ## Best Practices
 
 ### 1. Consistent Documentation
@@ -258,39 +216,6 @@ dbt docs generate --models customers
 
 # Include sources in documentation
 dbt docs generate --include-sources
-```
-
-## CI/CD Integration
-
-```yaml
-# .github/workflows/docs.yml
-name: Generate Documentation
-
-on:
-  push:
-    branches: [main]
-
-jobs:
-  docs:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      
-      - name: Setup dbt
-        run: |
-          pip install dbt-core dbt-postgres
-          
-      - name: Generate docs
-        run: |
-          cd jaffle_shop
-          dbt deps
-          dbt docs generate
-          
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./jaffle_shop/target
 ```
 
 ## Conclusion

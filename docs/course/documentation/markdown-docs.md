@@ -71,7 +71,6 @@ models:
       Central fact table containing all order transactions.
       
       **Upstream Dependencies:**
-      - {{ doc('staging_orders_overview') }}
       - {{ ref('stg_customers') }}
       - {{ ref('stg_products') }}
       
@@ -105,7 +104,7 @@ Create reusable documentation blocks:
 
 ```yaml
 # In models/docs.md or any .md file in your project
-{% docs staging_orders_overview %}
+<!-- docs tag example -->
 ## Staging Orders Overview
 
 The staging orders model performs the following transformations:
@@ -137,7 +136,7 @@ FROM {{ ref('stg_orders') }}
 WHERE order_date >= '2024-01-01'
 LIMIT 10;
 ```
-{% enddocs %}
+<!-- enddocs -->
 ```
 
 Then reference it in YAML:
@@ -145,7 +144,7 @@ Then reference it in YAML:
 ```yaml
 models:
   - name: stg_orders
-    description: "{{ doc('staging_orders_overview') }}"
+    description: "[see documentation]"
 ```
 
 ## 📊 Tables and Data Examples
@@ -264,12 +263,12 @@ models:
     
     ## Revenue Recognition Rules
     
-    {{ doc('revenue_recognition_policy') }}
+    [see documentation]
     
     ## Key Formulas
     
     {% for metric in ['arr', 'mrr', 'churn_rate'] %}
-    - **{{ metric | title }}**: {{ doc(metric + '_calculation') }}
+    - **{{ metric | title }}**: [see documentation]
     {% endfor %}
 ```
 
@@ -354,7 +353,7 @@ models/
 
 ```markdown
 <!-- models/docs/business_logic.md -->
-{% docs order_status_logic %}
+<!-- docs tag example -->
 ## Order Status Determination
 
 Orders are classified into the following statuses:
@@ -392,7 +391,7 @@ Orders are classified into the following statuses:
 - Express orders skip `confirmed` status when inventory is available
 - International orders require additional compliance checks
 
-{% enddocs %}
+<!-- enddocs -->
 ```
 
 ## 🔧 Best Practices
@@ -450,7 +449,7 @@ description: |
   - {{ ref('customer_metrics') }} - Uses this model
   
   **Documentation:**
-  - {{ doc('order_processing_overview') }}
+  - [see documentation]
   - [Business Requirements](https://confluence.company.com/orders)
 ```
 

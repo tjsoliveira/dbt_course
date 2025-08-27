@@ -49,9 +49,9 @@ nav:
     - Tests: course/tests.md
     - Documentation:
       - Overview: course/documentation/index.md
+      - YAML Configuration: course/documentation/yaml-configuration.md
       - Markdown Docs: course/documentation/markdown-docs.md
       - Interactive Docs: course/documentation/interactive-docs.md
-      - YAML Configuration: course/documentation/yaml-configuration.md
   - About: about-author.md
 
 # Plugins
