@@ -83,57 +83,9 @@ python -m venv venv
 source venv/bin/activate
 # On Windows:
 venv\Scripts\activate
-
-# Install dependencies from requirements file
-pip install -r requirements.txt
-
-# The requirements.txt file includes:
-# - dbt-core==1.10.9 (dbt main engine)
-# - dbt-sqlite==1.10.0 (SQLite adapter)
-# - faker>=20.0.0 (data generation for tests)
 ```
 
-### **3. Navigate to Project and Install Dependencies**
-```bash
-# Enter the dbt project directory
-cd jaffle_shop
-
-# Install dbt packages
-dbt deps
-
-# This will install:
-# - dbt_utils (essential utilities)
-# - Other dependencies listed in packages.yml
-```
-
-### **4. Profile Configuration**
-The `profiles.yml` file is already configured for SQLite:
-
-```yaml
-jaffle_shop:
-  target: dev
-  outputs:
-    dev:
-      type: sqlite
-      threads: 1
-      database: 'jaffle_shop'
-      schema: 'main'
-      schemas_and_paths:
-        main: './jaffle_shop/db/jaffle_shop.db'
-      schema_directory: 'jaffle_shop'
-```
-
-### **5. Configuration Verification**
-```bash
-# Test connection
-dbt debug
-
-# Expected result: ✅ All checks passed!
-```
-
-## 📊 Complete Project Initialization
-
-### **Automatic Initialization Script** 🚀
+### **3. Automatic Initialization Script** 🚀
 The project includes a script that automates the entire initialization:
 
 ```bash
@@ -153,34 +105,11 @@ The project includes a script that automates the entire initialization:
 - **raw_products.csv**: ~200 products with price issues
 - **raw_items.csv**: ~1500 items with quantity/price issues
 
-### **Manual Initialization (Alternative)**
-If you prefer step-by-step:
-
+### **4. Install dbt dependencies**
 ```bash
-# 1. Generate custom data
-python3 scripts/generate_all_data.py
-
-# 2. Load data into database, build models and run tests
 cd jaffle_shop
-dbt build
+dbt deps
 ```
-
-### **Models Created:**
-After initialization, you'll have:
-
-- **Staging Layer** (Clean and standardized data):
-    - `stg_customers` - Customer information with data quality checks
-    - `stg_orders` - Order details with validation
-    - `stg_products` - Product catalog with categorization
-    - `stg_items` - Order line items with pricing
-
-- **Marts Layer** (Business-ready datasets):
-    - `daily_sales_summary` - Daily sales performance metrics
-    - `duplicate_customers` - Analysis of potential duplicate customer records
-
-- **Analytics Layer** (Aggregated metrics and KPIs):
-    - `dim_customers` - Customer dimension table with aggregated metrics
-    - `fct_orders` - Order fact table with business logic and data quality checks
 
 ## 🧪 Data Quality Testing
 
@@ -344,12 +273,6 @@ dbt run --select +problem_model
 ```bash
 # Investigate specific failures
 dbt test --select test_that_failed --store-failures
-```
-
-#### **"Slow performance"**
-```bash
-# Use parallel execution
-dbt run --threads 4
 ```
 
 ## 📞 Next Steps
