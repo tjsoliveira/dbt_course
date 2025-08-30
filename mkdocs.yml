@@ -38,10 +38,9 @@ theme:
 nav:
   - Home: index.md
   - Getting Started: intro/what-is-dbt.md
-  - Setup: intro/setup.md
+  - Setup: jaffle-shop/project-setup.md
   - Jaffle Shop:
     - Overview: jaffle-shop/overview.md
-    - Project Setup: jaffle-shop/project-setup.md
   - Course:
     - Overview: course/index.md
     - Sources: course/sources.md
