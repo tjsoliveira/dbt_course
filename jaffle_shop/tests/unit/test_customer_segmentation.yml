@@ -1,0 +1,82 @@
+version: 2
+
+unit_tests:
+  - name: test_customer_segmentation_logic
+    model: fct_orders
+    description: |
+      Testa a lógica de segmentação de clientes baseada no valor do pedido:
+      - premium: total_amount > 200
+      - regular: 100 < total_amount <= 200  
+      - budget: total_amount <= 100
+      
+      Casos testados:
+      - Valores exatos nos limites (200, 100)
+      - Valores acima e abaixo dos limites
+      - Diferentes cenários de valor
+    
+    given:
+      - input: ref('stg_customers')
+        rows:
+          - {customer_id: 1, first_name: "Ana", last_name: "Silva", email: "ana@email.com", city: "São Paulo", state: "SP", has_valid_email: true, has_valid_phone: true}
+          - {customer_id: 2, first_name: "Bruno", last_name: "Costa", email: "bruno@email.com", city: "Rio de Janeiro", state: "RJ", has_valid_email: true, has_valid_phone: false}
+          - {customer_id: 3, first_name: "Carla", last_name: "Mendes", email: "carla@email.com", city: "Belo Horizonte", state: "MG", has_valid_email: false, has_valid_phone: true}
+          - {customer_id: 4, first_name: "Diego", last_name: "Santos", email: "diego@email.com", city: "Salvador", state: "BA", has_valid_email: true, has_valid_phone: true}
+          - {customer_id: 5, first_name: "Elena", last_name: "Ferreira", email: "elena@email.com", city: "Fortaleza", state: "CE", has_valid_email: true, has_valid_phone: true}
+      
+      - input: ref('stg_orders')
+        rows:
+          - {order_id: 100, customer_id: 1, order_date: "2024-01-15", status: "delivered", total_amount: 250.0, payment_method: "credit_card", delivery_address: "Rua A, 123", is_high_value_order: false, is_fulfilled: true, created_at: "2024-01-15 10:00:00"}
+          - {order_id: 101, customer_id: 2, order_date: "2024-01-16", status: "shipped", total_amount: 75.0, payment_method: "pix", delivery_address: "Rua B, 456", is_high_value_order: false, is_fulfilled: true, created_at: "2024-01-16 11:00:00"}
+          - {order_id: 102, customer_id: 3, order_date: "2024-01-17", status: "processing", total_amount: 150.0, payment_method: "boleto", delivery_address: "Rua C, 789", is_high_value_order: false, is_fulfilled: false, created_at: "2024-01-17 12:00:00"}
+          - {order_id: 103, customer_id: 4, order_date: "2024-01-18", status: "delivered", total_amount: 200.0, payment_method: "credit_card", delivery_address: "Rua D, 321", is_high_value_order: false, is_fulfilled: true, created_at: "2024-01-18 13:00:00"}
+          - {order_id: 104, customer_id: 5, order_date: "2024-01-19", status: "shipped", total_amount: 100.0, payment_method: "pix", delivery_address: "Rua E, 654", is_high_value_order: false, is_fulfilled: true, created_at: "2024-01-19 14:00:00"}
+      
+      - input: ref('stg_items')
+        rows:
+          - {order_id: 100, quantity: 2, calculated_total_price: 250.0}
+          - {order_id: 101, quantity: 1, calculated_total_price: 75.0}
+          - {order_id: 102, quantity: 3, calculated_total_price: 150.0}
+          - {order_id: 103, quantity: 1, calculated_total_price: 200.0}
+          - {order_id: 104, quantity: 2, calculated_total_price: 100.0}
+    
+    expect:
+      rows:
+        - {order_id: 100, customer_id: 1, customer_segment: "premium"}  # 250 > 200
+        - {order_id: 101, customer_id: 2, customer_segment: "budget"}   # 75 <= 100
+        - {order_id: 102, customer_id: 3, customer_segment: "regular"}  # 100 < 150 <= 200
+        - {order_id: 103, customer_id: 4, customer_segment: "regular"}  # 100 < 200 <= 200
+        - {order_id: 104, customer_id: 5, customer_segment: "budget"}   # 100 <= 100
+
+  - name: test_customer_segmentation_edge_cases
+    model: fct_orders
+    description: |
+      Testa casos extremos da segmentação de clientes:
+      - Valor exatamente 200 (limite premium/regular)
+      - Valor exatamente 100 (limite regular/budget)
+      - Valores próximos aos limites
+    
+    given:
+      - input: ref('stg_customers')
+        rows:
+          - {customer_id: 10, first_name: "Test", last_name: "User", email: "test@email.com", city: "Test City", state: "TS", has_valid_email: true, has_valid_phone: true}
+      
+      - input: ref('stg_orders')
+        rows:
+          - {order_id: 200, customer_id: 10, order_date: "2024-01-20", status: "delivered", total_amount: 200.01, payment_method: "credit_card", delivery_address: "Test Address", is_high_value_order: false, is_fulfilled: true, created_at: "2024-01-20 10:00:00"}
+          - {order_id: 201, customer_id: 10, order_date: "2024-01-21", status: "delivered", total_amount: 199.99, payment_method: "pix", delivery_address: "Test Address", is_high_value_order: false, is_fulfilled: true, created_at: "2024-01-21 11:00:00"}
+          - {order_id: 202, customer_id: 10, order_date: "2024-01-22", status: "delivered", total_amount: 100.01, payment_method: "boleto", delivery_address: "Test Address", is_high_value_order: false, is_fulfilled: true, created_at: "2024-01-22 12:00:00"}
+          - {order_id: 203, customer_id: 10, order_date: "2024-01-23", status: "delivered", total_amount: 99.99, payment_method: "credit_card", delivery_address: "Test Address", is_high_value_order: false, is_fulfilled: true, created_at: "2024-01-23 13:00:00"}
+      
+      - input: ref('stg_items')
+        rows:
+          - {order_id: 200, quantity: 1, calculated_total_price: 200.01}
+          - {order_id: 201, quantity: 1, calculated_total_price: 199.99}
+          - {order_id: 202, quantity: 1, calculated_total_price: 100.01}
+          - {order_id: 203, quantity: 1, calculated_total_price: 99.99}
+    
+    expect:
+      rows:
+        - {order_id: 200, customer_id: 10, customer_segment: "premium"}  # 200.01 > 200
+        - {order_id: 201, customer_id: 10, customer_segment: "regular"}  # 100 < 199.99 <= 200
+        - {order_id: 202, customer_id: 10, customer_segment: "regular"}  # 100 < 100.01 <= 200
+        - {order_id: 203, customer_id: 10, customer_segment: "budget"}   # 99.99 <= 100

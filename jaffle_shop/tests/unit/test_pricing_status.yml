@@ -1,0 +1,69 @@
+version: 2
+
+unit_tests:
+  - name: test_pricing_status_logic
+    model: fct_orders
+    description: |
+      Testa a lógica de comparação entre preço original e calculado:
+      - overcharged: calculated_total > original_total
+      - undercharged: calculated_total < original_total
+      - accurate: calculated_total == original_total
+      
+      Também testa a flag has_amount_discrepancy
+    
+    given:
+      - input: ref('stg_customers')
+        rows:
+          - {customer_id: 1, first_name: "João", last_name: "Santos", email: "joao@email.com", city: "Salvador", state: "BA", has_valid_email: true, has_valid_phone: true}
+      
+      - input: ref('stg_orders')
+        rows:
+          - {order_id: 300, customer_id: 1, order_date: "2024-01-20", status: "delivered", total_amount: 100.0, payment_method: "credit_card", delivery_address: "Rua D, 321", is_high_value_order: false, is_fulfilled: true, created_at: "2024-01-20 14:00:00"}
+          - {order_id: 301, customer_id: 1, order_date: "2024-01-21", status: "delivered", total_amount: 150.0, payment_method: "pix", delivery_address: "Rua E, 654", is_high_value_order: false, is_fulfilled: true, created_at: "2024-01-21 15:00:00"}
+          - {order_id: 302, customer_id: 1, order_date: "2024-01-22", status: "delivered", total_amount: 200.0, payment_method: "boleto", delivery_address: "Rua F, 987", is_high_value_order: false, is_fulfilled: true, created_at: "2024-01-22 16:00:00"}
+      
+      - input: ref('stg_items')
+        rows:
+          - {order_id: 300, quantity: 1, calculated_total_price: 120.0}  # Cliente foi overcharged (pagou 100, deveria pagar 120)
+          - {order_id: 301, quantity: 1, calculated_total_price: 130.0}  # Cliente foi undercharged (pagou 150, deveria pagar 130)
+          - {order_id: 302, quantity: 1, calculated_total_price: 200.0}  # Preço accurate (pagou 200, deveria pagar 200)
+    
+    expect:
+      rows:
+        - {order_id: 300, customer_id: 1, pricing_status: "overcharged", has_amount_discrepancy: true}
+        - {order_id: 301, customer_id: 1, pricing_status: "undercharged", has_amount_discrepancy: true}
+        - {order_id: 302, customer_id: 1, pricing_status: "accurate", has_amount_discrepancy: false}
+
+  - name: test_pricing_status_edge_cases
+    model: fct_orders
+    description: |
+      Testa casos extremos de diferenças de preços:
+      - Diferenças muito pequenas (centavos)
+      - Valores zero
+      - Diferenças grandes
+    
+    given:
+      - input: ref('stg_customers')
+        rows:
+          - {customer_id: 2, first_name: "Maria", last_name: "Silva", email: "maria@email.com", city: "São Paulo", state: "SP", has_valid_email: true, has_valid_phone: true}
+      
+      - input: ref('stg_orders')
+        rows:
+          - {order_id: 400, customer_id: 2, order_date: "2024-01-25", status: "delivered", total_amount: 100.01, payment_method: "credit_card", delivery_address: "Test Address", is_high_value_order: false, is_fulfilled: true, created_at: "2024-01-25 10:00:00"}
+          - {order_id: 401, customer_id: 2, order_date: "2024-01-26", status: "delivered", total_amount: 99.99, payment_method: "pix", delivery_address: "Test Address", is_high_value_order: false, is_fulfilled: true, created_at: "2024-01-26 11:00:00"}
+          - {order_id: 402, customer_id: 2, order_date: "2024-01-27", status: "delivered", total_amount: 0.0, payment_method: "boleto", delivery_address: "Test Address", is_high_value_order: false, is_fulfilled: true, created_at: "2024-01-27 12:00:00"}
+          - {order_id: 403, customer_id: 2, order_date: "2024-01-28", status: "delivered", total_amount: 500.0, payment_method: "credit_card", delivery_address: "Test Address", is_high_value_order: false, is_fulfilled: true, created_at: "2024-01-28 13:00:00"}
+      
+      - input: ref('stg_items')
+        rows:
+          - {order_id: 400, quantity: 1, calculated_total_price: 100.00}  # Overcharged por 1 centavo
+          - {order_id: 401, quantity: 1, calculated_total_price: 100.00}  # Undercharged por 1 centavo
+          - {order_id: 402, quantity: 1, calculated_total_price: 50.0}    # Muito undercharged (grátis vs 50)
+          - {order_id: 403, quantity: 1, calculated_total_price: 100.0}   # Muito overcharged (500 vs 100)
+    
+    expect:
+      rows:
+        - {order_id: 400, customer_id: 2, pricing_status: "overcharged", has_amount_discrepancy: true}
+        - {order_id: 401, customer_id: 2, pricing_status: "undercharged", has_amount_discrepancy: true}
+        - {order_id: 402, customer_id: 2, pricing_status: "undercharged", has_amount_discrepancy: true}
+        - {order_id: 403, customer_id: 2, pricing_status: "overcharged", has_amount_discrepancy: true}

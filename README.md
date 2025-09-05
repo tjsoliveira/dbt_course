@@ -67,13 +67,15 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 # Install dependencies
 pip install -r requirements.txt
 
-# Generate sample data
-cd jaffle_shop
+# Generate sample data (from project root)
 python scripts/generate_all_data.py
 
-# Run dbt
-dbt run
-dbt test
+# Navigate to dbt project and install dependencies
+cd jaffle_shop
+dbt deps
+
+# Run dbt (build includes seed + run + test)
+dbt build
 ```
 
 ## 📁 **Project Structure**
