@@ -14,7 +14,7 @@ SEEDS_DIR = os.path.join(PROJECT_ROOT, 'jaffle_shop', 'seeds', 'jaffle-data')
 
 # Output file paths
 CUSTOMERS_FILE = os.path.join(SEEDS_DIR, 'raw_customers.csv')
-PRODUCTS_FILE = os.path.join(SEEDS_DIR, 'products.csv')
+PRODUCTS_FILE = os.path.join(SEEDS_DIR, 'raw_products.csv')
 ORDERS_FILE = os.path.join(SEEDS_DIR, 'raw_orders.csv')
 ITEMS_FILE = os.path.join(SEEDS_DIR, 'raw_items.csv')
 

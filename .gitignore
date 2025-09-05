@@ -72,3 +72,7 @@ Thumbs.db
 # Project specific
 **/seeds/jaffle-data/*
 *.pyc
+
+# Empty directories (keep structure but ignore contents)
+bin/
+include/
